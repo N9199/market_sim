@@ -1,4 +1,4 @@
-s[package]
+[package]
 name = "market_sim"
 version = "0.1.0"
 authors = ["N9199"]
