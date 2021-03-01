@@ -1,0 +1,14 @@
+s[package]
+name = "market_sim"
+version = "0.1.0"
+authors = ["N9199"]
+edition = "2018"
+publish = false
+repository = "https://github.com/N9199/market_sim/"
+license = "GPL-3.0-or-later"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "^0.6"
+rusqlite = {git = "https://github.com/rusqlite/rusqlite"}
+sum_type = "^0.2"
