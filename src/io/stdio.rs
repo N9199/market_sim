@@ -1,19 +1,20 @@
-use std::fs;
-
 use crate::io::{Error, IO};
 use crate::simulation::sim::Company;
 
-pub struct io {}
+use std::collections::BTreeMap;
+use std::fs;
 
-impl IO for io {
+pub struct stdIO {}
+
+impl IO for stdIO {
     fn write(&mut self, info: &Vec<(usize, f64)>) -> Result<(), Error> {
         Ok(())
     }
-    fn save(&mut self, companies: &Vec<Company>) -> Result<(), Error> {
+    fn save(&mut self, companies: &BTreeMap<usize, Company>) -> Result<(), Error> {
         Ok(())
     }
-    fn load(&mut self, file: &str) -> Result<Vec<Company>, Error> {
+    fn load(&mut self, file: &str) -> Result<BTreeMap<usize, Company>, Error> {
         let info = fs::read_to_string(file)?;
-        Ok(Vec::new())
+        Ok(BTreeMap::new())
     }
 }

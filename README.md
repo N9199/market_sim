@@ -34,9 +34,6 @@ A side project about a "simple" market simulator, originally made to help in a D
         - Pros:
           - Super easy and light
           - Uses just one variable which only updates at the end of each update cycle.
-        - Cons:
-          - Non-intuitive place to save state in tables
-          - Could give way to using a mutable global state, which could hurt parallelization?
 - [ ] Finish io
   - [ ] Finish sql.rs
     - [ ] Check that sql.rs uses specified format (see SQL Table Specification)
@@ -44,6 +41,7 @@ A side project about a "simple" market simulator, originally made to help in a D
     - [ ] Create format?
     - [ ] Specify format
     - [ ] Code specified format
+- [ ] Add Testing!!!!!!!!!!!
 - [ ] Redo main.rs
 - [ ] Add documentation
 - [ ] Check sim.rs "correctness" (i.e. specify expected behaviour in documentation and check it behaves as expected)

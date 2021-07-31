@@ -12,3 +12,6 @@ license = "GPL-3.0-or-later"
 rand = "^0.6"
 rusqlite = {git = "https://github.com/rusqlite/rusqlite"}
 sum_type = "^0.2"
+rayon = "^1.5"
+log = "^0.4"
+itertools = "^0.10"

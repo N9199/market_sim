@@ -1,13 +1,15 @@
-use rusqlite::{params, Connection};
-
 use crate::io::{Error, IO};
 use crate::simulation::sim::Company;
 
-pub struct io {
+use std::collections::BTreeMap;
+
+use rusqlite::{params, Connection};
+
+pub struct sqlIO {
     db: Connection,
 }
 
-impl IO for io {
+impl IO for sqlIO {
     fn write(&mut self, info: &Vec<(usize, f64)>) -> Result<(), Error> {
         for (id, price) in info {
             let mut temp = self
@@ -15,18 +17,17 @@ impl IO for io {
                 .prepare(&format!("SELECT MAX(time) FROM {}_History", id))?;
             let temp = temp.query_map([], |row| row.get(0))?;
             let time: usize = temp.last().unwrap_or(Ok(0))?;
-            
         }
         Ok(())
     }
-    fn save(&mut self, companies: &Vec<Company>) -> Result<(), Error> {
+    fn save(&mut self, companies: &BTreeMap<usize, Company>) -> Result<(), Error> {
         Ok(())
     }
-    fn load(&mut self, file: &str) -> Result<Vec<Company>, Error> {
+    fn load(&mut self, file: &str) -> Result<BTreeMap<usize, Company>, Error> {
         self.db = Connection::open(file)?;
-        let mut temp = self.db.prepare(
-            "SELECT id, name, price, new_p, delta_p, volatility, bankrupt FROM Companies",
-        )?;
+        let mut temp = self
+            .db
+            .prepare("SELECT id, name, price, delta_p, volatility, bankrupt FROM Companies")?;
         let temp = temp.query_map(params![], |row| {
             Ok(Company::load(
                 row.get(0)?,
@@ -35,18 +36,19 @@ impl IO for io {
                 row.get(3)?,
                 row.get(4)?,
                 row.get(5)?,
-                row.get(6)?,
                 Vec::new(),
             ))
         })?;
-        let mut out = Vec::new();
+        let mut out = BTreeMap::new();
         for c in temp {
-            out.push(c.unwrap());
+            if let Ok(c) = c {
+                out.insert(c.id, c);
+            }
         }
-        for c in &mut out {
+        for (id, c) in &mut out {
             let mut temp = self.db.prepare(&format!(
                 "SELECT in_id, out_id, weight, FROM Dependencies WHERE in_id = {}",
-                c.id
+                id
             ))?;
             let temp = temp.query_map(params![], |row| Ok((row.get(1)?, row.get(2)?)))?;
             for e in temp {
